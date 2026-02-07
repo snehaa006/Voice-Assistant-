@@ -1,0 +1,2 @@
+// Replace this with your real OpenAI key
+const OPENAI_API_KEY = "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";
