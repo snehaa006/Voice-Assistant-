@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SenseAI — Voice Assistant for Accessibility | Download</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0f1a;
+      --surface: #141a2e;
+      --surface-hover: #1c2440;
+      --accent: #00e676;
+      --accent-dim: rgba(0, 230, 118, 0.12);
+      --accent-glow: rgba(0, 230, 118, 0.25);
+      --text: #e8eaf6;
+      --text-secondary: #9fa8c7;
+      --border: rgba(255, 255, 255, 0.06);
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Nav --- */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(11, 15, 26, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+    .nav-brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* --- Hero --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 720px; }
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent-dim);
+      color: var(--accent);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 24px;
+      border: 1px solid rgba(0, 230, 118, 0.2);
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 540px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* --- Buttons --- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0b0f1a;
+      box-shadow: 0 4px 24px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px var(--accent-glow);
+    }
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      transform: translateY(-1px);
+    }
+
+    /* --- Sections --- */
+    section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      display: inline-block;
+      background: var(--accent-dim);
+      color: var(--accent);
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* --- Features Grid --- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all 0.25s;
+    }
+    .feature-card:hover {
+      background: var(--surface-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--accent-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* --- Commands --- */
+    .commands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .command-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .command-group h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--accent);
+    }
+    .command-group ul {
+      list-style: none;
+    }
+    .command-group li {
+      padding: 6px 0;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .command-group li:last-child { border-bottom: none; }
+    .command-group li code {
+      background: rgba(0, 230, 118, 0.08);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    /* --- Install Steps --- */
+    .install-steps {
+      counter-reset: step;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 680px;
+    }
+    .install-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all 0.2s;
+    }
+    .install-step:hover {
+      background: var(--surface-hover);
+    }
+    .step-number {
+      counter-increment: step;
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .step-number::before { content: counter(step); }
+    .step-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .step-content p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .step-content code {
+      background: rgba(0, 230, 118, 0.08);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    /* --- FAQ --- */
+    .faq-list { max-width: 680px; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    .faq-item summary {
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.3rem;
+      color: var(--accent);
+      transition: transform 0.2s;
+    }
+    .faq-item[open] summary::after {
+      transform: rotate(45deg);
+    }
+    .faq-item p {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* --- Footer --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* --- Responsive --- */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .btn { width: 100%; justify-content: center; }
+      section { padding: 60px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-brand" aria-label="SenseAI Home">SenseAI</a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#commands">Commands</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-content">
+      <div class="hero-badge">Open Source &middot; Free Forever</div>
+      <h1>Browse the web<br>with your <span>voice</span></h1>
+      <p>SenseAI is a browser extension that gives blind and visually impaired users full control of any website through voice commands. No mouse, no keyboard — just speak.</p>
+      <div class="hero-actions">
+        <a href="#install" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Extension
+        </a>
+        <a href="#features" class="btn btn-secondary">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" aria-label="Features">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Designed for accessibility, built for everyone</h2>
+    <p class="section-subtitle">Every feature is crafted to make the web usable through voice alone — no sighted assistance needed.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎤</div>
+        <h3>Wake Word Activation</h3>
+        <p>Say "Hey Sense" to activate the assistant on any page. No need to click anything — it's always listening for you.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <h3>Page Reader</h3>
+        <p>Reads page content, headings, and links aloud. Navigate between headings and links with simple voice commands.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎬</div>
+        <h3>YouTube Control</h3>
+        <p>Search videos, play, pause, skip, adjust volume, and go fullscreen — all hands-free on YouTube.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧭</div>
+        <h3>Page Navigation</h3>
+        <p>Scroll, go back, jump to top or bottom, click elements by name, and open any website with a single command.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Multi-Command Mode</h3>
+        <p>Stays awake for 30 seconds after each command so you can chain multiple actions without repeating the wake word.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⌨️</div>
+        <h3>Keyboard Shortcut</h3>
+        <p>Press Ctrl+Shift+S (or Cmd+Shift+S on Mac) to instantly toggle the assistant without saying the wake word.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commands -->
+  <section id="commands" aria-label="Voice commands reference">
+    <div class="section-label">Commands</div>
+    <h2 class="section-title">Everything you can say</h2>
+    <p class="section-subtitle">A complete reference of all voice commands. Just wake the assistant and speak naturally.</p>
+
+    <div class="commands-grid">
+      <div class="command-group">
+        <h3>Page Reading</h3>
+        <ul>
+          <li><code>read page</code> — Read main content aloud</li>
+          <li><code>read headings</code> — List all headings</li>
+          <li><code>read links</code> — List visible links</li>
+          <li><code>read selection</code> — Read highlighted text</li>
+          <li><code>summarize</code> — Get a page summary</li>
+          <li><code>where am I</code> — Current page and site info</li>
+        </ul>
+      </div>
+      <div class="command-group">
+        <h3>Navigation</h3>
+        <ul>
+          <li><code>next heading</code> / <code>previous heading</code></li>
+          <li><code>next link</code> / <code>previous link</code></li>
+          <li><code>click [text]</code> — Click an element by its text</li>
+          <li><code>scroll down</code> / <code>scroll up</code></li>
+          <li><code>go to top</code> / <code>go to bottom</code></li>
+          <li><code>go back</code> / <code>refresh</code></li>
+        </ul>
+      </div>
+      <div class="command-group">
+        <h3>YouTube &amp; Media</h3>
+        <ul>
+          <li><code>search for [topic]</code> — YouTube search</li>
+          <li><code>play first video</code> — Play top result</li>
+          <li><code>play</code> / <code>pause</code></li>
+          <li><code>forward 30</code> / <code>backward 10</code></li>
+          <li><code>volume up</code> / <code>volume down</code></li>
+          <li><code>mute</code> / <code>fullscreen</code></li>
+        </ul>
+      </div>
+      <div class="command-group">
+        <h3>Utilities</h3>
+        <ul>
+          <li><code>open YouTube</code> / <code>open Google</code></li>
+          <li><code>open [any website]</code></li>
+          <li><code>what time is it</code> / <code>what is the date</code></li>
+          <li><code>zoom in</code> / <code>zoom out</code> / <code>reset zoom</code></li>
+          <li><code>stop</code> — Interrupt speech</li>
+          <li><code>go to sleep</code> — Deactivate assistant</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section id="install" aria-label="Installation instructions">
+    <div class="section-label">Install</div>
+    <h2 class="section-title">Get started in under a minute</h2>
+    <p class="section-subtitle">SenseAI runs on Chrome, Edge, Brave, and any Chromium-based browser. Follow these steps to install.</p>
+
+    <a href="https://github.com/snehaa006/Voice-Assistant-/archive/refs/heads/main.zip" class="btn btn-primary" style="margin-bottom: 40px;" download>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download ZIP from GitHub
+    </a>
+
+    <div class="install-steps">
+      <div class="install-step">
+        <div class="step-number" aria-hidden="true"></div>
+        <div class="step-content">
+          <h3>Download the extension</h3>
+          <p>Click the download button above. You'll get a <code>.zip</code> file containing all extension files.</p>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="step-number" aria-hidden="true"></div>
+        <div class="step-content">
+          <h3>Unzip the folder</h3>
+          <p>Extract the ZIP file to a permanent location on your computer (e.g., your Documents folder). Don't delete this folder — Chrome needs it.</p>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="step-number" aria-hidden="true"></div>
+        <div class="step-content">
+          <h3>Open the extensions page</h3>
+          <p>Open Chrome and go to <code>chrome://extensions</code> in the address bar. Or go to Menu (three dots) &rarr; Extensions &rarr; Manage Extensions.</p>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="step-number" aria-hidden="true"></div>
+        <div class="step-content">
+          <h3>Enable Developer Mode</h3>
+          <p>In the top-right corner of the extensions page, toggle on <strong>Developer mode</strong>.</p>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="step-number" aria-hidden="true"></div>
+        <div class="step-content">
+          <h3>Load the extension</h3>
+          <p>Click <strong>"Load unpacked"</strong> in the top-left corner, then select the unzipped folder. SenseAI will appear in your extensions list.</p>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="step-number" aria-hidden="true"></div>
+        <div class="step-content">
+          <h3>Allow microphone access</h3>
+          <p>Visit any website and allow microphone access when prompted. Say <strong>"Hey Sense"</strong> — you're ready to go.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" aria-label="Frequently asked questions">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Frequently asked questions</h2>
+    <p class="section-subtitle">Quick answers to common questions about SenseAI.</p>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Which browsers are supported?</summary>
+        <p>SenseAI works on Chrome, Microsoft Edge, Brave, Opera, and any Chromium-based browser that supports the Web Speech API. Firefox and Safari are not yet supported due to differences in speech recognition APIs.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is it free?</summary>
+        <p>Yes, completely free and open source. No accounts, no subscriptions, no data collection.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does it send my voice data anywhere?</summary>
+        <p>SenseAI uses your browser's built-in speech recognition (Web Speech API). Voice processing is handled by your browser — the extension itself does not transmit or store any audio or transcripts.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I use it without saying the wake word?</summary>
+        <p>Yes. Press <strong>Ctrl+Shift+S</strong> (or <strong>Cmd+Shift+S</strong> on Mac) to activate the assistant instantly with your keyboard.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Why does it ask for microphone permission on every site?</summary>
+        <p>Chrome requires microphone permission per-site for security. You can allow it permanently for trusted sites in Chrome's site settings.</p>
+      </details>
+      <details class="faq-item">
+        <summary>The assistant isn't hearing me. What should I do?</summary>
+        <p>Make sure microphone access is allowed for the current site (check the lock icon in the address bar). Try refreshing the page. If using a Bluetooth headset, make sure it's set as the default input device in your system settings.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I use it on mobile?</summary>
+        <p>Not currently. Chrome extensions are only supported on desktop browsers. Mobile browser support is a future goal.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>SenseAI Voice Assistant &middot; Open source on <a href="https://github.com/snehaa006/Voice-Assistant-" target="_blank" rel="noopener">GitHub</a></p>
+    <p style="margin-top: 8px;">Built to make the web accessible for everyone.</p>
+  </footer>
+
+</body>
+</html>

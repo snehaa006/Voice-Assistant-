@@ -1,14 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "AI Accessibility Assistant",
-  "version": "1.0",
-  "description": "Hands-free voice assistant for blind users. Works on all websites.",
+  "name": "SenseAI – Voice Assistant for Accessibility",
+  "version": "2.0",
+  "description": "Hands-free voice assistant for blind and visually impaired users. Navigate any website, control media, and read pages — all by voice.",
   "permissions": [
-    "scripting",
-    "tabs",
     "activeTab",
     "storage",
-    "notifications"
+    "tabs"
   ],
   "host_permissions": ["<all_urls>"],
   "background": {
@@ -21,6 +19,15 @@
       "run_at": "document_idle"
     }
   ],
+  "commands": {
+    "toggle-assistant": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Toggle SenseAI voice assistant"
+    }
+  },
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
@@ -32,6 +39,6 @@
       "48": "icon48.png",
       "128": "icon128.png"
     },
-    "default_title": "AI Accessibility Assistant"
+    "default_title": "SenseAI Voice Assistant"
   }
 }
