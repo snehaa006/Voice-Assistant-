@@ -1,4 +1,4 @@
-// SenseAI Voice Assistant — Background Service Worker
+// Luma Voice Assistant — Background Service Worker
 
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {

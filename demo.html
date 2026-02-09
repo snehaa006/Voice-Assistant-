@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SenseAI Voice Assistant</title>
+    <title>Luma Voice Assistant</title>
     <style>
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -128,11 +128,11 @@
   </head>
   <body>
     <div class="container">
-      <h1>🤖 SenseAI Voice Assistant</h1>
+      <h1>🤖 Luma Voice Assistant</h1>
 
       <div class="instructions">
         <p>
-          Say <strong>"Hey SenseAI"</strong> to activate voice commands on any
+          Say <strong>"Hey Luma"</strong> to activate voice commands on any
           webpage!
         </p>
       </div>
@@ -199,7 +199,7 @@
         <div style="text-align: left; color: rgba(255, 255, 255, 0.9)">
           <p><strong>1.</strong> Click "Initialize Voice Assistant" above</p>
           <p><strong>2.</strong> Allow microphone access when prompted</p>
-          <p><strong>3.</strong> Say "Hey SenseAI" to activate</p>
+          <p><strong>3.</strong> Say "Hey Luma" to activate</p>
           <p><strong>4.</strong> Give your command (e.g., "Search for cats")</p>
           <p><strong>5.</strong> The assistant will execute and respond</p>
         </div>
@@ -217,29 +217,19 @@
       let consecutiveFailures = 0;
 
       const wakePhrases = [
-        "hey senseai",
-        "hey sensai",
-        "hey sense ai",
-        "hey since ai",
-        "hey sensi",
-        "hey sansei",
-        "hey senchai",
-        "hey sent say i",
-        "hey sanjay",
-        "hey sensei",
-        "hey sincere",
-        "hey centre",
+        "hey luma",
+        "hey looma",
+        "hey luna",
+        "hey luma ai",
+        "luma",
+        "looma",
+        "luna",
+        "luma ai",
         "hey assistant",
         "hey voice",
-        "sense ai",
-        "sensai",
-        "sense",
         "assistant",
         "voice",
         "hey",
-        "senseai",
-        "sen say",
-        "sen sai",
         "hey there",
         "listen",
         "wake up",
@@ -381,7 +371,7 @@
           updateStatusBar(
             isAwake
               ? "Listening for command..."
-              : "Say 'Hey SenseAI' to activate",
+              : "Say 'Hey Luma' to activate",
             isAwake ? "🎤" : "😴"
           );
           callback && callback();
@@ -461,8 +451,8 @@
 
         updateStatusBar(
           sessionStarted
-            ? "Ready - Say 'Hey SenseAI'"
-            : "Say 'Hey SenseAI' to activate",
+            ? "Ready - Say 'Hey Luma'"
+            : "Say 'Hey Luma' to activate",
           "😴"
         );
 
@@ -595,7 +585,7 @@
           return;
         }
 
-        console.log("🚀 Initializing SenseAI Voice Assistant...");
+        console.log("🚀 Initializing Luma Voice Assistant...");
 
         // Create status bar if it doesn't exist
         if (!statusBar) {
@@ -610,9 +600,9 @@
         // Start listening for wake word
         setTimeout(() => {
           listenForWakeWord();
-          updateStatusBar("Ready! Say 'Hey SenseAI' to activate", "😴");
+          updateStatusBar("Ready! Say 'Hey Luma' to activate", "😴");
           speak(
-            "SenseAI initialized! Say 'Hey SenseAI' to activate voice commands.",
+            "Luma initialized! Say 'Hey Luma' to activate voice commands.",
             null,
             "success"
           );
@@ -621,7 +611,7 @@
 
       // Auto-initialize when page loads
       window.addEventListener("load", () => {
-        console.log("🎯 SenseAI Voice Assistant loaded");
+        console.log("🎯 Luma Voice Assistant loaded");
         updateStatusBar("Click 'Initialize Voice Assistant' to start", "🎯");
       });
 
