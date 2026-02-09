@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "SenseAI – Voice Assistant for Accessibility",
+  "name": "Luma – Voice Assistant for Accessibility",
   "version": "2.0",
-  "description": "Hands-free voice assistant for blind and visually impaired users. Navigate any website, control media, and read pages — all by voice.",
+  "description": "Hands-free voice assistant by Luma for blind and visually impaired users. Navigate any website, control media, and read pages — all by voice.",
   "permissions": [
     "activeTab",
     "storage",
@@ -25,7 +25,7 @@
         "default": "Ctrl+Shift+S",
         "mac": "Command+Shift+S"
       },
-      "description": "Toggle SenseAI voice assistant"
+      "description": "Toggle Luma voice assistant"
     }
   },
   "icons": {
@@ -39,6 +39,6 @@
       "48": "icon48.png",
       "128": "icon128.png"
     },
-    "default_title": "SenseAI Voice Assistant"
+    "default_title": "Luma Voice Assistant"
   }
 }

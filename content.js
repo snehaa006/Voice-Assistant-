@@ -1,9 +1,9 @@
-// SenseAI Voice Assistant — Content Script
+// Luma Voice Assistant — Content Script
 // Accessibility-first voice assistant for blind and visually impaired users
 
 (function () {
-  if (window._senseAIInitialized) return;
-  window._senseAIInitialized = true;
+  if (window._lumaInitialized) return;
+  window._lumaInitialized = true;
 
   // --- State ---
   let isAwake = false;
@@ -18,16 +18,15 @@
 
   // --- Wake Phrases ---
   const wakePhrases = [
-    "hey sense", "hey senseai", "hey sensai", "hey sense ai",
-    "hey since ai", "hey sensi", "hey sansei", "hey senchai",
-    "hey sent say i", "hey sensei", "hey assistant", "hey voice",
-    "sense ai", "sensai", "sense", "senseai", "sen say", "sen sai",
+    "hey luma", "hey looma", "hey luna", "hey luma ai",
+    "luma", "looma", "luna", "luma ai",
+    "hey assistant", "hey voice",
     "assistant", "voice", "activate", "start", "wake up",
     "listen", "hello", "hi", "computer"
   ];
 
   const wakeFuzzyPatterns = [
-    /hey\s*sen[sc]/, /\bsen[sc]e?\s*a?i?\b/, /assist/, /voice/,
+    /hey\s*lu+ma/, /\blu+ma\b/, /\blu+na\b/, /assist/, /voice/,
     /wake/, /activate/, /listen/, /hello/, /\bhi\b/, /computer/
   ];
 
@@ -36,10 +35,10 @@
   // --- Status Bar ---
   function createStatusBar() {
     const bar = document.createElement("div");
-    bar.id = "senseai-status-bar";
+    bar.id = "luma-status-bar";
     bar.setAttribute("role", "status");
     bar.setAttribute("aria-live", "polite");
-    bar.setAttribute("aria-label", "SenseAI Voice Assistant status");
+    bar.setAttribute("aria-label", "Luma Voice Assistant status");
     bar.style.cssText = `
       position: fixed;
       bottom: 20px;
@@ -61,8 +60,8 @@
     `;
     bar.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
-        <div id="senseai-icon" style="font-size: 16px;" aria-hidden="true">🤖</div>
-        <div id="senseai-text">Initializing...</div>
+        <div id="luma-icon" style="font-size: 16px;" aria-hidden="true">🤖</div>
+        <div id="luma-text">Initializing...</div>
       </div>
     `;
     document.body.appendChild(bar);
@@ -73,8 +72,8 @@
 
   function updateStatus(text, icon) {
     if (!statusBar) return;
-    const iconEl = statusBar.querySelector("#senseai-icon");
-    const textEl = statusBar.querySelector("#senseai-text");
+    const iconEl = statusBar.querySelector("#luma-icon");
+    const textEl = statusBar.querySelector("#luma-text");
     if (iconEl && icon) iconEl.textContent = icon;
     if (textEl) textEl.textContent = text;
   }
@@ -94,7 +93,7 @@
     utterance.onend = () => {
       isSpeaking = false;
       updateStatus(
-        isAwake ? "Listening for command..." : "Say 'Hey Sense' to wake me",
+        isAwake ? "Listening for command..." : "Say 'Hey Luma' to wake me",
         isAwake ? "🎤" : "😴"
       );
       if (callback) callback();
@@ -131,7 +130,7 @@
     recog.onstart = () => {
       isListening = true;
       consecutiveFailures = 0;
-      updateStatus("Say 'Hey Sense' to wake me", "😴");
+      updateStatus("Say 'Hey Luma' to wake me", "😴");
     };
 
     recog.onerror = (e) => {
@@ -187,7 +186,7 @@
         headingIndex = -1;
         linkIndex = -1;
         stopSpeaking();
-        updateStatus("Going to sleep. Say 'Hey Sense' to wake me.", "😴");
+        updateStatus("Going to sleep. Say 'Hey Luma' to wake me.", "😴");
         speak("Going to sleep.", () => {
           listenForWakeWord();
         });
@@ -285,7 +284,7 @@
     if (cmd.includes("go to sleep") || cmd.includes("sleep") || cmd === "bye" || cmd === "goodbye") {
       isAwake = false;
       clearTimeout(awakeTimeout);
-      speak("Going to sleep. Say 'Hey Sense' to wake me.", () => {
+      speak("Going to sleep. Say 'Hey Luma' to wake me.", () => {
         listenForWakeWord();
       });
       return;
@@ -938,7 +937,7 @@
         if (!hasAnnouncedReady) {
           hasAnnouncedReady = true;
           updateStatus("Voice Assistant Ready", "✅");
-          speak("SenseAI voice assistant ready. Say 'Hey Sense' to activate, or press Control Shift S.", () => {
+          speak("Luma voice assistant ready. Say 'Hey Luma' to activate, or press Control Shift S.", () => {
             listenForWakeWord();
           });
         }
